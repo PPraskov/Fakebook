@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="~{fragments/head}"></th:block>
+</head>
+<body>
+<header>
+    <th:block th:include="~{fragments/navbar}"></th:block>
+</header>
+<main class="mt-3">
+    <div class="jumbotron bg-light">
+        <h1 class="display-1 font-italic text-md-center">Fakebook</h1>
+
+        <div class="col-2"></div>
+        <div>
+            <form class="form w-25 mx-auto" action="#" th:action="@{/post/add}" method="post" th:object="${model}">
+                <div class="form-group">
+                    <label for="content" class="font-weight-bold">Add post</label>
+                    <input type="text" class="form-control" id="content" placeholder="Write it here..."
+                           th:value="*{content}"/>
+                </div>
+
+                <div class="button-holder d-flex justify-content-center">
+                    <button type="submit" class="btn btn-dark">Add post</button>
+                </div>
+            </form>
+        </div>
+        <div class="post-container col-8">
+
+        </div>
+        <div class="col-2"></div>
+    </div>
+    </div>
+    <script>
+
+        function formatComment(comment) {
+
+        }
+
+        function formatPost(post) {
+            return '<div class="post">'
+                + `<a class="text-center font-weight-bold mt-1" href="/user/profile/${post.publisher}">${profile.publisher}</a>`
+                + `<hr>`
+                + `<p class="text-center font-weight-light mt-1">${post.content}</p>`
+                +  `<div></div>`
+                + `<hr>`
+                + '</div>'
+        }
+
+        $(document).ready(function () {
+            fetch('http://localhost:8000/fetch/allposts')
+                .then((response) => response.json())
+                .then((json) => {
+                    $('.post-container').empty();
+
+                    if (json.length === 0) {
+                        $('.post-container').append(`<h3 class="text-center font-weight-bold mt-3">There no posts.</h3>`)
+                    } else {
+                        for (let i = 0; i < json.length; i += 3) {
+                            $('.post-container').append('<div class="products-row row d-flex justify-content-around mt-2">');
+                            if (i < json.length) $('.post-container').append(formatPost(json[i]));
+                            if (i + 1 < json.length) $('.post-container').append(formatPost(json[i + 1]));
+                            if (i + 2 < json.length) $('.post-container').append(formatPost(json[i + 2]));
+                        }
+                    }
+                })
+        });
+
+
+    </script>
+</main>
+<footer>
+    <th:block th:include="~{fragments/footer}"></th:block>
+</footer>
+</body>
+</html>
