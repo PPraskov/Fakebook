@@ -11,40 +11,49 @@
 <main class="mt-3">
     <div class="jumbotron bg-light">
         <h1 class="display-1 font-italic text-md-center">Fakebook</h1>
+        <div class="col-4"></div>
+        <form class="form w-25 mx-auto" th:action="@{/post/add}" th:method="post" th:object="${model}">
+            <div class="form-group">
+                <label for="title" class="font-weight-bold">Title</label>
+                <input type="text" class="form-control" id="title" placeholder="Title..." name="title"
+                       th:value="*{title}">
+            </div>
+            <div class="form-group">
+                <label for="content" class="font-weight-bold">Content</label>
+                <input type="text" class="form-control" id="content" placeholder="Write it here..." name="content"
+                       th:value="*{content}">
 
-        <div class="col-2"></div>
+            </div>
+
+            <hr class="hr-2 bg-dark">
+            <div class="button-holder d-flex justify-content-center">
+                <button type="submit" class="btn btn-dark">Add post</button>
+            </div>
+        </form>
         <div>
-            <form class="form w-25 mx-auto" action="#" th:action="@{/post/add}" method="post" th:object="${model}">
-                <div class="form-group">
-                    <label for="content" class="font-weight-bold">Add post</label>
-                    <input type="text" class="form-control" id="content" placeholder="Write it here..."
-                           th:value="*{content}"/>
-                </div>
-
-                <div class="button-holder d-flex justify-content-center">
-                    <button type="submit" class="btn btn-dark">Add post</button>
-                </div>
-            </form>
+            <br>
+            <br>
+            <br>
         </div>
-        <div class="post-container col-8">
-
-        </div>
-        <div class="col-2"></div>
-    </div>
+        <div class="post-container"></div>
     </div>
     <script>
 
-        function formatComment(comment) {
-
-        }
-
         function formatPost(post) {
-            return '<div class="post">'
-                + `<a class="text-center font-weight-bold mt-1" href="/user/profile/${post.publisher}">${profile.publisher}</a>`
+            return '<div class="post col-6 center-div">'
+                + `<a class="text-center font-weight-bold mt-1" href="/user/profile/${post.publisher}">${post.publisher}</a>`
                 + `<hr>`
-                + `<p class="text-center font-weight-light mt-1">${post.content}</p>`
-                +  `<div></div>`
+                + `<h4 class="text-center font-weight-light mt-1">${post.title}</h4>`
+                + `<p class="text-left font-weight-light mt-1">${post.content}</p>`
                 + `<hr>`
+                + `<div style="text-align: right">`
+                + `<a class="text-right " href="/post/${post.id}">${post.comments.length} comments</a>`
+                + `<br>`
+                + `<a style="text-align: right" href="/post/report/${post.id}">Report post</a>`
+                + `</div>`
+                + `<br>`
+                + `<br>`
+                + `<br>`
                 + '</div>'
         }
 
@@ -57,11 +66,10 @@
                     if (json.length === 0) {
                         $('.post-container').append(`<h3 class="text-center font-weight-bold mt-3">There no posts.</h3>`)
                     } else {
-                        for (let i = 0; i < json.length; i += 3) {
-                            $('.post-container').append('<div class="products-row row d-flex justify-content-around mt-2">');
-                            if (i < json.length) $('.post-container').append(formatPost(json[i]));
-                            if (i + 1 < json.length) $('.post-container').append(formatPost(json[i + 1]));
-                            if (i + 2 < json.length) $('.post-container').append(formatPost(json[i + 2]));
+                        for (let i = 0; i < json.length; i++) {
+                            $('.post-container').append(`<div class="col-4"></div>`);
+                            $('.post-container').append(formatPost(json[i]));
+                            $('.post-container').append(`<div class="col-4"></div>`);
                         }
                     }
                 })

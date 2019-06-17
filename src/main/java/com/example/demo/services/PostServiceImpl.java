@@ -63,7 +63,7 @@ public class PostServiceImpl implements PostService {
     public void addPost(PostServiceModel model) {
         try {
             User user = this.userService.getUser(model.getPublisher());
-            Post post = new Post();
+            Post post = this.modelMapper.map(model, Post.class);
             post.setContent(model.getContent());
             post.setPublisher(user);
             this.postRepository.saveAndFlush(post);

@@ -8,6 +8,7 @@ import java.util.List;
 public class Post extends BaseEntity {
 
     private User publisher;
+    private String title;
     private String content;
     private List<Comment> comments;
 
@@ -22,6 +23,15 @@ public class Post extends BaseEntity {
 
     public void setPublisher(User publisher) {
         this.publisher = publisher;
+    }
+
+    @Column(name = "title")
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @Column(name = "content", columnDefinition = "text")

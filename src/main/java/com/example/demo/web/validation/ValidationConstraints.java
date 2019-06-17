@@ -14,4 +14,6 @@ public class ValidationConstraints {
 
     public static final String ILLEGAL_EMAIL = "Illegal email !";
 
+    public static final String LOGIN_FAILURE = "Wrong username or password !";
+
 }

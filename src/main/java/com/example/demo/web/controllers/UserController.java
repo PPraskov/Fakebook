@@ -2,9 +2,7 @@ package com.example.demo.web.controllers;
 
 import com.example.demo.domain.models.binding.UserRegisterBindingModel;
 import com.example.demo.domain.models.service.UserRegisterServiceModel;
-import com.example.demo.domain.models.view.PostViewModel;
 import com.example.demo.domain.models.view.UserProfileViewModel;
-import com.example.demo.error.UserNotFoundException;
 import com.example.demo.services.UserService;
 import com.example.demo.web.validation.user.UserRegisterValidator;
 import org.modelmapper.ModelMapper;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
-import java.util.List;
 
 @Controller
 @RequestMapping("/user")
@@ -25,6 +22,7 @@ public class UserController extends BaseController {
     private final UserService userService;
     private final ModelMapper modelMapper;
     private final UserRegisterValidator registerValidator;
+
 
     @Autowired
     public UserController(UserService userService, ModelMapper modelMapper, UserRegisterValidator registerValidator) {
@@ -36,7 +34,7 @@ public class UserController extends BaseController {
 
     @GetMapping("/register")
     @PreAuthorize("isAnonymous()")
-    public ModelAndView register(ModelAndView modelAndView, @ModelAttribute(name = "model") UserRegisterBindingModel model) {
+    public ModelAndView register(@ModelAttribute(name = "model") UserRegisterBindingModel model) {
 
         return super.view("/register");
     }
@@ -44,7 +42,7 @@ public class UserController extends BaseController {
     @PostMapping("/register")
     @PreAuthorize("isAnonymous()")
     public ModelAndView registerConfirm(ModelAndView modelAndView, @ModelAttribute(name = "model") UserRegisterBindingModel model, BindingResult bindingResult) {
-        this.registerValidator.validate(model,bindingResult);
+        this.registerValidator.validate(model, bindingResult);
 
         if (bindingResult.hasErrors()) {
             model.setPassword(null);
@@ -59,15 +57,15 @@ public class UserController extends BaseController {
     @GetMapping("/login")
     @PreAuthorize("isAnonymous()")
     public ModelAndView login() {
-
         return super.view("/login");
     }
+
 
 
     @GetMapping("/profile/{username}")
     @PreAuthorize("isAuthenticated()")
     public ModelAndView profile(@PathVariable String username, ModelAndView modelAndView) {
-        UserProfileViewModel userModel = this.modelMapper.map(this.userService.findByUsername(username),UserProfileViewModel.class);
+        UserProfileViewModel userModel = this.modelMapper.map(this.userService.findByUsername(username), UserProfileViewModel.class);
 
         modelAndView.addObject("userInfo", userModel);
 
@@ -77,14 +75,10 @@ public class UserController extends BaseController {
     @GetMapping("/myprofile")
     @PreAuthorize("isAuthenticated()")
     public ModelAndView profile(Principal principal, ModelAndView modelAndView) {
-        UserProfileViewModel userModel = this.modelMapper.map(this.userService.findByUsername(principal.getName()),UserProfileViewModel.class);
+        UserProfileViewModel userModel = this.modelMapper.map(this.userService.findByUsername(principal.getName()), UserProfileViewModel.class);
 
         modelAndView.addObject("userInfo", userModel);
 
         return super.view("/profile", modelAndView);
     }
-
-
-
-
 }

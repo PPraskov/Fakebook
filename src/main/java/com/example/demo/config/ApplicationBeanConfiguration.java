@@ -26,4 +26,5 @@ public class ApplicationBeanConfiguration {
     public Validator validator(){
         return Validation.buildDefaultValidatorFactory().getValidator();
     }
+
 }

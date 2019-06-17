@@ -5,6 +5,7 @@ import java.util.List;
 public class PostServiceModel {
 
     private String id;
+    private String title;
     private String content;
     private String publisher;
     private List<CommentServiceModel> comments;
@@ -18,6 +19,14 @@ public class PostServiceModel {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getContent() {
